@@ -1,0 +1,28 @@
+.container__column {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.container__row {
+  display: flex;
+  gap: 10px;
+  min-width: 300px;
+  max-width: 500px;
+}
+
+.input {
+  max-width: 500px;
+}
+
+.button {
+  align-self: self-start;
+}
+
+.warning__text {
+  color: red;
+}
+
+.select {
+  width: 200px;
+}
