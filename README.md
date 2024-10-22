@@ -1,46 +1,75 @@
-# Getting Started with Create React App
+# Проект Библиотека
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Процесс разработки
 
-## Available Scripts
+### Шаг 1. Инициализация проекта
 
-In the project directory, you can run:
+1. Создан новый проект с помощью утилиты
 
-### `npm start`
+   `npx create-react-app library --template typescript`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+2. Установлены необходимые зависимости - `mobx`, `mobx-react-lite`, `antd`
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+   `cd library`
+   
+    `npm install mobx mobx-react-lite antd`
 
-### `npm test`
+### Шаг 2. Создание базовой структуры проекта и добавлении функциональности компонентам
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+1. Созданы базовые компоненты `BookList`, `ReaderList`, `BorrowBook`, `ReaderBooks`
+   
+2. Созданы сторы `bookStore` и `readerStore` для управления состоянием книг и читателей с помощью `MobX`
+     
+### Шаг 3. Настройка сторов `bookStore` и `readerStore`
 
-### `npm run build`
+1. `bookStore`
+     - `Book` - это TypeScript-интерфейс, который описывает структуру объекта книги: id, title, description.
+     - `Class BookStore` - это класс, который управляет книгами в приложении, используя `MobX` для управления состоянием и реактивности. Он позволяет добавлять книги, сохранять и загружать их из `localStorage`, а также предоставляет методы для взаимодействия с компонентами.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+2. `readerStore`
+   - `Reader` - это TypeScript-интерфейс, который описывает структуру объекта читателя: id, lastName, borrowedBooks.
+   - `Class ReaderStore` - это класс, который управляет состоянием читателей и взятых ими книг. Методы класса позволяют добавлять новых читателей, предоставлять им книги, сохранять данные в `localStorage` и загружать их оттуда.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Шаг 4. Добавление функциональности для `BookList`
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+ - `BookList` - для управления списком книг, позволяющий добавлять новые книги, проверять   уникальность по названию, а также отображать список всех добавленных книг с возможностью просматривать их описание через аккордеон. Внутри компонента используются два локальных состояния - `title` хранит заголовки книг, `description` хранит описание книг. Эти состояния обновляются каждый раз, когда пользователь вводит данные в текстовые поля, и используется при добавлении новой книги
 
-### `npm run eject`
+### Шаг 5. Добавление функциональности для `ReaderList`
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+ - `ReaderList` - для управления списком читателей и отображения информации о них. Этот компонент использует `MobX` для реактивного управления состоянием через хранилище `readerStore` с помощью `observer` и позволяет добавлять новых читателей. Каждый читатель в списке имеет аккордеон, внутри которого можно увидеть список книг, которые он взял
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Шаг 6. Добавление функциональности для `BorrowBook`
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+- `BorrowBook` - реализует функционал выбора книги и читателя, а также позволяет назначить книгу читателю, если эта книга еще не была взята данным читателем. Он взаимодействует с MobX-хранилищами `bookStore` и `readerStore` и поддерживает состояние выбора книги и читателя с использованием хуков React. С помощью `useEffect` осуществляется проверка, взята ли книга выбранным читателем или нет. Он вызывается каждый раз, когда изменяются значения `selectedBookId` или `selectedReaderId`
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+### Шаг 7. Добавление функциональности для `ReaderBooks`
 
-## Learn More
+- `ReaderBooks` - отображает список книг, которые конкретный читатель взял из библиотеки. Он использует observer из библиотеки `mobx-react-lite`, чтобы реагировать на изменения в MobX-хранилище, и отображает данные в виде списка с помощью компонента `List` из `Ant Design`.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Загрузка и запуск проекта
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Шаг 1. Клонирование репозитория
+
+`git clone <URL_репозитория>`
+
+### Шаг 2. Перейти в директорию проекта
+
+`cd <имя_директории_проекта>`
+
+### Шаг 3. Установка зависимостей
+
+`npm install`
+
+### Шаг 4. Запуск проекта
+
+`npm start`
+
+## Доступные скрипты
+
+1. `npm start` - запускает проект в режиме разработке. По умолчанию по адресу `http://localhost:3000`
+
+2. `npm test` - запускает написанные тесты
+
+3.  `npm run build` - запускает сборку для оптимизации приложения
+
+4. `npm run eject` - используется для извлечения конфигурации CRA для ее видоизменения
